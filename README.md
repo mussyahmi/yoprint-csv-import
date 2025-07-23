@@ -1,133 +1,76 @@
-# Laravel CSV Importer with Queue Processing
+# YoPrint CSV Import
 
-This project is a Laravel-based application that allows users to upload CSV files through a drag-and-drop UI. The files are queued for background processing via Laravel Jobs and then inserted into a database. It supports real-time upload history with status and time tracking.
+A Laravel-based application that allows CSV file uploads, processes them via queued jobs, and displays the upload history and imported product data.
 
----
+## Features
 
-## 🚀 Features
+- Drag & drop CSV upload UI (TailwindCSS)
+- Asynchronous CSV processing via Laravel Queues
+- Product import from CSV using `updateOrInsert`
+- Status tracking: pending, processing, completed, failed
+- Laravel Horizon integration for queue monitoring
 
-- Drag & Drop CSV file upload with real-time feedback
-- Upload history table (sortable and humanized time display)
-- Laravel Queue with Horizon for async processing
-- Auto-creates or updates products from CSV
-- Supports UTF-8 cleanup during import
-- Error handling and logging per file
+## Getting Started
 
----
-
-## 🛠️ Tech Stack
-
-- Laravel 10+
-- TailwindCSS (CDN)
-- Axios
-- MySQL / SQLite
-- Laravel Horizon (optional)
-
----
-
-## 📦 Setup Instructions
+### Clone the repository
 
 ```bash
 git clone https://github.com/mussyahmi/yoprint-csv-import.git
 cd yoprint-csv-import
+```
+
+### Install dependencies
+
+```bash
 composer install
+```
+
+### Environment setup
+
+Copy `.env.example` and update your database and Redis credentials.
+
+```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-Set your DB credentials in `.env`.
+### Migrate the database
 
 ```bash
 php artisan migrate
 ```
 
-(Optional: queue with Horizon)
+### Start the Laravel server
+
 ```bash
-php artisan horizon
+php artisan serve
 ```
 
----
+This will start the app at `http://127.0.0.1:8000`.
 
-## 📁 Uploading Files
+### Queue & Redis setup
 
-- Accepts `.csv` or `.txt`
-- Uses drag-and-drop or manual selection
-- Files are stored in `storage/app/uploads`
+Ensure you have Redis installed and running:
 
----
+```bash
+redis-server
+```
 
-## 🧠 CSV Format
-
-| UNIQUE_KEY | PRODUCT_TITLE | PRODUCT_DESCRIPTION | STYLE# | SANMAR_MAINFRAME_COLOR | SIZE | COLOR_NAME | PIECE_PRICE |
-|------------|----------------|---------------------|--------|--------------------------|------|-------------|-------------|
-| ...        | ...            | ...                 | ...    | ...                      | ...  | ...         | ...         |
-
----
-
-## 🖼 Example
-
-The `upload.blade.php` provides a simple UI with:
-- Dropzone file input
-- File preview
-- Upload table with time, file name, and status
-
----
-
-## 🧪 Commands
-
-Run the queue worker:
+Start queue worker and Laravel Horizon:
 
 ```bash
 php artisan queue:work
-```
-
-Run Horizon (optional):
-
-```bash
 php artisan horizon
 ```
 
+## CSV Format
 
-
----
-
-## 📜 License
-
-MIT — feel free to use, fork, or contribute.
-
-## Queue & Horizon Setup
-
-This project uses Laravel Horizon for queue management. Horizon requires Redis to be running.
-
-### Requirements
-
-- Redis installed on your machine
-
-### Start Redis
-
-#### macOS (Homebrew)
-```bash
-brew services start redis
-```
-
-#### Ubuntu/Debian
-```bash
-sudo service redis-server start
-```
-
-#### Windows
-Use [WSL](https://learn.microsoft.com/en-us/windows/wsl/) or install Redis manually from [https://redis.io](https://redis.io)
-
-### Start the Laravel Queue Worker
-
-```bash
-php artisan horizon
-```
-
-Or monitor via browser:
+Your CSV file must contain the following headers:
 
 ```
-http://localhost:8000/horizon
+UNIQUE_KEY, PRODUCT_TITLE, PRODUCT_DESCRIPTION, STYLE#, SANMAR_MAINFRAME_COLOR, SIZE, COLOR_NAME, PIECE_PRICE
 ```
 
-> ⚠️ Redis must be running **before uploading CSV files** or your jobs will fail silently.
+## License
+
+MIT
