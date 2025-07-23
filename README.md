@@ -56,10 +56,9 @@ Ensure you have Redis installed and running:
 redis-server
 ```
 
-Start queue worker and Laravel Horizon:
+Start Laravel Horizon:
 
 ```bash
-php artisan queue:work
 php artisan horizon
 ```
 
