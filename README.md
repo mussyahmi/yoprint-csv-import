@@ -70,6 +70,9 @@ Your CSV file must contain the following headers:
 UNIQUE_KEY, PRODUCT_TITLE, PRODUCT_DESCRIPTION, STYLE#, SANMAR_MAINFRAME_COLOR, SIZE, COLOR_NAME, PIECE_PRICE
 ```
 
+### 📁 Sample CSV
+A test CSV file is included at `tests/files/yoprint_test_import.csv` for testing the upload feature.
+
 ## License
 
 MIT
